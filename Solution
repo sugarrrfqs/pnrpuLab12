@@ -1,0 +1,125 @@
+#include <iostream>
+#include <string>
+#include <fstream>
+
+using namespace std;
+
+struct human
+{
+  string fio;
+  string date;
+  int number;
+};
+
+int main()
+{
+  ifstream input ("F.txt");
+  string row;
+  human humans[5],y;
+  int i=0, j, number=0, passport, left=0, right=4, mid,g;
+  bool f;
+
+
+  while (!input.eof()) // Читаем информацию из файла
+  {
+    number=0;
+
+    getline (input, row);
+    humans[i].fio=row;
+
+    getline (input, row);
+    humans[i].date=row;
+
+    getline (input, row);
+    number= (row[0]-'0')*100000+(row[1]-'0')*10000+(row[2]-'0')*1000+(row[3]-'0')*100+(row[4]-'0')*10+(row[5]-'0');
+    humans[i].number=number;
+
+    i++;
+  }
+
+  for (i=0;i<5;i++) // Выводим массив в консоль
+  {
+    cout<<"Фио: "<<humans[i].fio<<'\n'<<"Дата рождения: "<<humans[i].date<<'\n'<<"Номер паспорта: "<<humans[i].number<<'\n'<<'\n';
+  }
+  
+  cout<<"Введите номер паспорта нужного вам человека ";
+  cin>>passport;
+
+//Метод поиска- линейный
+  for (i=0;i<5;i++)
+  {
+    if (humans[i].number==passport)
+    {
+      cout<<"Человек найден (Метод поиска- линейный), его номер в списке: "<<i<<'\n';
+      cout<<"Фио: "<<humans[i].fio<<'\n'<<"Дата рождения: "<<humans[i].date<<'\n'<<"Номер паспорта: "<<humans[i].number<<'\n';
+    }
+  }
+
+//Метод поиска- поиск подстроки в строке
+  f=false;
+  g=100000;
+
+  for (i=0;i<5;i++)
+  {
+    g=100000;
+    f=false;
+    while (f!=true and g>0)
+    {
+      if (passport/g!=humans[i].number/g)
+      {
+        f=true;
+      }
+      g=g/10;
+    }
+    if (f==false)
+    {
+      cout<<"\nЧеловек найден (Метод поиска- поиск подстроки в строке), его номер в списке: "<<i<<'\n';
+      cout<<"Фио: "<<humans[i].fio<<'\n'<<"Дата рождения: "<<humans[i].date<<'\n'<<"Номер паспорта: "<<humans[i].number<<'\n';
+    }
+  }
+
+// Метод поиска- интерполяционный
+  for (i=0;i<5;i++)
+  {
+    j=i-1;
+    f=false;
+    while ((j>-1) and (f==false))
+    {
+      if (humans[j].number>humans[j+1].number)
+      {
+        y=humans[j];
+        humans[j]=humans[j+1];
+        humans[j+1]=y;
+      }
+      else 
+      {
+        f=true;
+      }
+      j--;
+    }
+
+  }
+
+  mid= left+(passport-humans[left].number)*(right-left)/(humans[right].number-humans[left].number);
+  
+    while (humans[right].number>passport && humans[left].number<passport && passport!=humans[right].number)
+    {
+      mid= left+(passport-humans[left].number)*(right-left)/(humans[right].number-humans[left].number);
+
+      cout<<mid<<'\n';
+      if (humans[mid].number>passport)
+      {
+        right=mid-1;
+      }
+      else
+      {
+        left=mid+1;
+      }
+    }
+      cout<<"\nЧеловек найден (Метод поиска- интерполяционный), его номер в отсортированном списке: "<<mid<<'\n';
+      cout<<"Фио: "<<humans[mid].fio<<'\n'<<"Дата рождения: "<<humans[mid].date<<'\n'<<"Номер паспорта: "<<humans[mid].number<<'\n';
+    
+
+
+
+}
