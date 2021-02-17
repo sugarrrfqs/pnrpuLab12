@@ -17,7 +17,7 @@ int main()
   string row;
   human humans[5],y;
   int i=0, j, number=0, passport, left=0, right=4, mid,g;
-  bool f;
+  bool f,fl=false;
 
 
   while (!input.eof()) // Читаем информацию из файла
@@ -52,9 +52,12 @@ int main()
     {
       cout<<"Человек найден (Метод поиска- линейный), его номер в списке: "<<i<<'\n';
       cout<<"Фио: "<<humans[i].fio<<'\n'<<"Дата рождения: "<<humans[i].date<<'\n'<<"Номер паспорта: "<<humans[i].number<<'\n';
+      fl=true;
     }
   }
-
+ 
+ if (fl)
+ {
 //Метод поиска- поиск подстроки в строке
   f=false;
   g=100000;
@@ -119,7 +122,11 @@ int main()
       cout<<"\nЧеловек найден (Метод поиска- интерполяционный), его номер в отсортированном списке: "<<mid<<'\n';
       cout<<"Фио: "<<humans[mid].fio<<'\n'<<"Дата рождения: "<<humans[mid].date<<'\n'<<"Номер паспорта: "<<humans[mid].number<<'\n';
     
-
+ }
+ else
+ {
+   cout<<"Человек с этим номером паспорта не найден";
+ }
 
 
 }
